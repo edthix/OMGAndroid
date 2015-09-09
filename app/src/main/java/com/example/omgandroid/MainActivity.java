@@ -1,6 +1,7 @@
 package com.example.omgandroid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 //import android.widget.ShareActionProvider;
 import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,8 +33,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView mainListView;
     ArrayAdapter mArrayAdapter;
     ArrayList<String> mNameList = new ArrayList();
-
     ShareActionProvider mShareActionProvider;
+
+    // Constants
+    private static final String PREFS = "prefs";
+    private static final String PREF_NAME = "name";
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 5. Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
+
+        // 7. Greet the user, or ask their ame if new
+        displayWelcome();
+    }
+
+    private void displayWelcome() {
+        // Access the device's key-valuu storage
+        mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+
+        // Read the user's name,
+        // or an empty string if nothing found
+        String name = mSharedPreferences.getString(PREF_NAME, "");
+
+         if(name.length() > 0) {
+             // If the name is valid, display a Toast welcoming them
+             Toast.makeText(MainActivity.this, "Welcome back " + name + "!", Toast.LENGTH_SHORT)
+                     .show();
+         }
     }
 
     @Override
