@@ -1,5 +1,7 @@
 package com.example.omgandroid;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -82,21 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         displayWelcome();
     }
 
-    private void displayWelcome() {
-        // Access the device's key-valuu storage
-        mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-
-        // Read the user's name,
-        // or an empty string if nothing found
-        String name = mSharedPreferences.getString(PREF_NAME, "");
-
-         if(name.length() > 0) {
-             // If the name is valid, display a Toast welcoming them
-             Toast.makeText(MainActivity.this, "Welcome back " + name + "!", Toast.LENGTH_SHORT)
-                     .show();
-         }
-    }
-
     @Override
     public void onClick(View view) {
 
@@ -159,6 +146,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // Make sure the provider knows it should work with that Intent
             mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
+
+    private void displayWelcome() {
+        // Access the device's key-valuu storage
+        mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+
+        // Read the user's name,
+        // or an empty string if nothing found
+        String name = mSharedPreferences.getString(PREF_NAME, "");
+
+        if(name.length() > 0) {
+            // If the name is valid, display a Toast welcoming them
+            Toast.makeText(MainActivity.this, "Welcome back " + name + "!", Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            // otherwise, show a dialog to ask for their name
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Hello!");
+            alert.setMessage("What is your name?");
+
+            // Create editText for entry
+            final EditText input = new EditText(this);
+            alert.setView(input);
+
+            // Make an "OK" button to save the name
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    // Grab the EditText's input
+                    String inputName = input.getText().toString();
+
+                    // Put it into memory (don't forget to commit!)
+                    SharedPreferences.Editor e = mSharedPreferences.edit();
+                    e.putString(PREF_NAME, inputName);
+                    e.commit();
+
+                    // Welcome the new user
+                    Toast.makeText(getApplicationContext(), "Welcome, " + inputName + "!", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            // Make a "Cancel" button
+            // that simply dismisses the alert
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {}
+            });
+
+            alert.show();
+
+
         }
     }
 }
