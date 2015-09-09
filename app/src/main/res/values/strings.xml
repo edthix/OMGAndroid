@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OMG Android</string>
+
+    <string name="textview">OMG I am doing Android lol</string>
+    <string name="action_settings">Settings</string>
+    <string name="button">Update the TextView</string>
+    <string name="image_button">TOGGLE IMG</string>
+    <string name="hint">A name</string>
+</resources>
