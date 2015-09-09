@@ -1,29 +1,25 @@
 package com.example.omgandroid;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ShareActionProvider;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+//import android.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
-import static com.example.omgandroid.R.menu.menu_main;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView
         .OnItemClickListener {
@@ -36,10 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayAdapter mArrayAdapter;
     ArrayList<String> mNameList = new ArrayList();
 
-
-
     ShareActionProvider mShareActionProvider;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 5. Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
-
-
     }
 
     @Override
@@ -94,27 +85,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     + " is learning Android development!");
         }
 
-
         // Also add that value to the list shown in the ListView
         mNameList.add(mainEditText.getText().toString());
         mArrayAdapter.notifyDataSetChanged();
 
+        // 6. The text you'd like to share has changed,
+        // and you need to update
+        setShareIntent();
+    }
+
+    @Override
+    public void onItemClick(AdapterView parent, View view, int position, long id) {
+        // Log the item's position and contents
+        // to the console in Debug
+        Log.d("omg android", position + ": " + mNameList.get(position));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu
-        // Adds items to the action bar if it is present.
-        getMenuInflater().inflate(menu_main, menu);
+        // Adds items to the action bar if it is present
+        getMenuInflater().inflate(R.menu.main, menu);
 
         // Access the Share Item defined in menu XML
         MenuItem shareItem = menu.findItem(R.id.menu_item_share);
 
-        // Access the object responsible for
-        // putting together the sharing submenu
-        //if (shareItem != null) {
-           // mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
-        //}
+        // Access the object responsible for putting together the sharing submenu
+        if (shareItem != null) {
+            // Locate MenuItem with ShareActionProvider
+            MenuItem item = menu.findItem(R.id.menu_item_share);
+
+            // Fetch and store ShareActionProvider
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        }
 
         // Create an Intent to share your content
         setShareIntent();
@@ -124,22 +127,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setShareIntent() {
         if (mShareActionProvider != null) {
-            // Create an Intent with the contents of TextView
+            // create an Intent with the contents of the TextView
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Development");
             shareIntent.putExtra(Intent.EXTRA_TEXT, mainTextView.getText());
 
-
             // Make sure the provider knows it should work with that Intent
             mShareActionProvider.setShareIntent(shareIntent);
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView parent, View view, int position, long id) {
-        // Log the item's position and contents
-        // to the console in Debug
-        Log.d("omg android", position + ": " + mNameList.get(position));
     }
 }
