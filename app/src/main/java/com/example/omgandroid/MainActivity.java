@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // If using appcompat 7, must be before super
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(false);
-        
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
