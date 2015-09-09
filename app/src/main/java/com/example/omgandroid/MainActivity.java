@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +21,12 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import static com.example.omgandroid.R.menu.menu_main;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView
+        .OnItemClickListener {
 
     TextView mainTextView;
     Button mainButton, imageButton;
@@ -72,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set the ListView to use the ArrayAdapter
         mainListView.setAdapter(mArrayAdapter);
 
+        // 5. Set this activity to react to list items being pressed
+        mainListView.setOnItemClickListener(this);
+
+
     }
 
     @Override
@@ -104,9 +112,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Access the object responsible for
         // putting together the sharing submenu
-        if (shareItem != null) {
+        //if (shareItem != null) {
            // mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
-        }
+        //}
 
         // Create an Intent to share your content
         setShareIntent();
@@ -126,5 +134,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Make sure the provider knows it should work with that Intent
             mShareActionProvider.setShareIntent(shareIntent);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView parent, View view, int position, long id) {
+        // Log the item's position and contents
+        // to the console in Debug
+        Log.d("omg android", position + ": " + mNameList.get(position));
     }
 }
