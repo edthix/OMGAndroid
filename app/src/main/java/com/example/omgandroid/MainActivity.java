@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView imageView;
     EditText mainEditText;
     ListView mainListView;
-    ArrayAdapter mArrayAdapter;
+    JSONAdapter mJSONAdapter;
     ArrayList<String> mNameList = new ArrayList();
     ShareActionProvider mShareActionProvider;
 
@@ -78,19 +78,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 4. Access the ListView
         mainListView = (ListView) findViewById(R.id.main_listview);
 
-        // Create an ArrayAdapter for the ListView
-        mArrayAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1,
-                mNameList);
-
-        // Set the ListView to use the ArrayAdapter
-        mainListView.setAdapter(mArrayAdapter);
 
         // 5. Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
 
         // 7. Greet the user, or ask their ame if new
         displayWelcome();
+
+        // 10. Create a JSONAdapter for the ListView
+        mJSONAdapter = new JSONAdapter(this, getLayoutInflater());
+
+        // Set the ListView to use the JSONAdapter
+        mainListView.setAdapter(mJSONAdapter);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Also add that value to the list shown in the ListView
         mNameList.add(mainEditText.getText().toString());
-        mArrayAdapter.notifyDataSetChanged();
+        //mArrayAdapter.notifyDataSetChanged();
 
         // 6. The text you'd like to share has changed,
         // and you need to update
@@ -119,9 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView parent, View view, int position, long id) {
-        // Log the item's position and contents
-        // to the console in Debug
-        Log.d("omg android", position + ": " + mNameList.get(position));
+
     }
 
     @Override
