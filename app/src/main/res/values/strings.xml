@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">OMG Android</string>
+    <string name="app_name">Bookmaster Epic</string>
 
-    <string name="textview">OMG I am doing Android lol</string>
+    <string name="textview">Search for Books!</string>
     <string name="action_settings">Settings</string>
-    <string name="button">Update the TextView</string>
+    <string name="button">Search</string>
     <string name="image_button">TOGGLE IMG</string>
-    <string name="hint">A name</string>
+    <string name="hint">Title and/or Author</string>
 </resources>
