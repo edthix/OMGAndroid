@@ -120,4 +120,10 @@ public class JSONAdapter extends BaseAdapter{
         public TextView titleTextView;
         public TextView authorTextView;
     }
+
+    public void updateData(JSONArray jsonArray) {
+        // update the adapter's dataset
+        mJsonArray = jsonArray;
+        notifyDataSetChanged();
+    }
 }

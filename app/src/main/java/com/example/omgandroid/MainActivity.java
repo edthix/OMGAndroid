@@ -235,6 +235,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // 8. For now, just log results
                 Log.d("omg android", jsonObject.toString());
+
+                // update the data in your custom method.
+                mJSONAdapter.updateData(jsonObject.optJSONArray("docs"));
             }
 
             @Override
