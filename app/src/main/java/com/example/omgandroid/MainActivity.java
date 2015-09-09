@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -53,7 +54,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 11. Add a spinning progress bar (and make sure it's off)
+        // If using appcompat 7, must be before super
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(false);
+        
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         // 1. Access the TextView defined in layout XML
@@ -225,10 +232,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Create a client to perform networking
         AsyncHttpClient client = new AsyncHttpClient();
 
+        // 11. start progress bar
+        setProgressBarIndeterminateVisibility(true);
+
         // Have the client get a JSONArray of data and define how to respond
         client.get(QUERY_URL + urlString, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
+                // 11. stop progress bar
+                setProgressBarIndeterminateVisibility(false);
+
                 // Display a "Toast" message
                 // to announce your success
                 Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
@@ -242,6 +255,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                // 11. stop progress bar
+                setProgressBarIndeterminateVisibility(false);
+
                 // Display a "Toast" message
                 // to announce the failure
                 Toast.makeText(getApplicationContext(), "Error: " + statusCode + " " + throwable.getMessage(), Toast.LENGTH_LONG).show();
